@@ -41,9 +41,12 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/springboot-maven-poc:sha-${GITHUB_SHA}
 
       - name: Configure Kubernetes kubeconfig
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         run: |
+          set -e
           mkdir -p "$HOME/.kube"
-          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > "$HOME/.kube/config"
+          printf '%s\n' "$KUBE_CONFIG_DATA" > "$HOME/.kube/config"
           chmod 600 "$HOME/.kube/config"
           kubectl config current-context
           kubectl get nodes
