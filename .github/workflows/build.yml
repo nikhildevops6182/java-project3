@@ -54,5 +54,5 @@ steps:
       kubectl apply -f service.yml
 
       kubectl get services
-```
+
 
